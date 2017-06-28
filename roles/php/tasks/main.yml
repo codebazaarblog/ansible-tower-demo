@@ -1,0 +1,28 @@
+---
+  - name: Install http and php etc
+    become: yes
+    become_method: sudo
+    yum: name={{ item }} state=present
+    with_items:
+     - httpd
+     - php
+
+#  - name: Include OS-specific variables.
+#    include_vars: "ports.yml"
+
+#  - name: insert iptables rule for httpd
+#    become: yes
+#    become_method: sudo
+#    lineinfile: dest=/etc/sysconfig/iptables create=yes state=present regexp="{{ httpd_port }}" insertafter="^:OUTPUT "
+#              line="-A INPUT -p tcp  --dport {{ httpd_port }} -j  ACCEPT"
+#    notify: restart iptables
+
+  - name: Creates the index.php file
+    become: yes
+    become_method: sudo
+    template: src=index.php dest=/var/www/html/index.php
+
+  - name: http service state
+    become: yes
+    become_method: sudo
+    service: name=httpd state=started enabled=yes
