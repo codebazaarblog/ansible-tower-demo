@@ -1,0 +1,5 @@
+---
+  - name: update-all
+    become: yes
+    become_method: sudo
+    yum: name=* state=latest
